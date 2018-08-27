@@ -24,7 +24,6 @@ sha512sums=('d6dcd9dfb7f5275562f831da87edfb712f01a9c4de1c3ea0070c0a9a2d7a21707ee
             '00777bc87b7e522cc96616c84451ddbe6470ba65ef97a6bd9be0acfd3295ea15e9d63ca2c95d3a08dd47e67a0c3cf0afccf849bfd0d2321a0444e837fed3311e')
 
 package() {
-    install -Dm755 "ddusb.py" "${pkgdir}/usr/bin/ddusb"
     install -Dm755 "drivetemp.py" "${pkgdir}/usr/bin/drivetemp"
     install -Dm755 "fqo.sh" "${pkgdir}/usr/bin/fqo"
     install -Dm755 "gek.sh" "${pkgdir}/usr/bin/gek"
