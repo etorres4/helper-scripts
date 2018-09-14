@@ -152,7 +152,6 @@ while true; do
             exit 1
             ;;
         *)
-            shift
             break
 	esac
 done
