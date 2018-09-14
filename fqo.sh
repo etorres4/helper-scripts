@@ -3,13 +3,33 @@
 
 printHelp() {
 cat << EOF
-    fqo - fuzzy find a file and then check which package owns it
-    Usage: fqo [patterns]
+fqo - fuzzy find a file and then check which package owns it
+Usage: fqo [-h|--help] [patterns]
 
-    Options:
-        -h  show this help page
+Options:
+    -h  show this help page
 EOF
 }
+
+while true; do
+    case "${1}" in
+        "-h"|"--help")
+            printHelp
+            exit
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -?*)
+            echo "Not an option: ${1}" >&2 && exit 1
+            exit
+            ;;
+        *)
+            break;
+            ;;
+    esac
+done
 
 [[ -z "${*}" ]] && echo "No patterns specified" && exit 1
 
