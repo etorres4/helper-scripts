@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 # Download audio using youtube-dl, passing
 # a specific set of options specified by the user
-#
-# Copyright (C) 2018 Eric Torres
-# 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 printHelp() {
 cat << EOF
@@ -29,16 +14,16 @@ Options:
 EOF
 }
 
-
 declare -a opts
 batchfile=
 filename=
+declare -r default_filename="--output=${HOME}/Music/%(title)s.%(ext)s"
 format=
 
 # error messages
-readonly nobatchfile_error="Error: no batch file entered"
-readonly nofilename_error="Error: no filename entered"
-readonly noformat_error="Error: no format entered"
+declare -r nobatchfile_error="Error: no batch file entered"
+declare -r nofilename_error="Error: no filename entered"
+declare -r noformat_error="Error: no format entered"
 
 while true; do
 	case "${1}" in
@@ -60,8 +45,8 @@ while true; do
             shift 2
             continue
             ;;
-        --batchfile=*)
-            batchfile="${2#*=}"
+        --batch-dl=*)
+            batchfile="${1#*=}"
             case "${batchfile}" in
                 "")
                     echo "${nobatchfile_error}" >&2
@@ -129,7 +114,7 @@ while true; do
             continue
             ;;
         --filename=*)
-            filename="${2#*=}"
+            filename="${1#*=}"
             case "${filename}" in
                 "")
                     echo "${nofilename_error}" >&2
@@ -156,23 +141,26 @@ while true; do
 	esac
 done
 
-[[ -z "${*}" ]] && echo "No input given" >&2 && exit 1
-
 # default options
 opts+=("--no-part")
 opts+=("--no-continue")
 opts+=("--extract-audio")
 opts+=("--audio-format=${format:-flac}")
 
-# set filename to either what the user set or its original title
-if [[ "${filename}" ]]; then
+# filename cannot be used at the same time as batch-dl
+if [[ "${filename}" && -z "${batchfile}" ]]; then
     opts+=("--output=${HOME}/Music/${filename}.%(ext)s")
-else
-    opts+=("--output=${HOME}/Music/%(title)s.%(ext)s")
+elif [[ "${batchfile}" && -z "${filename}" ]]; then
+    opts+=("${default_filename}")
+elif [[ "${batchfile}" && "${filename}" ]]; then
+    printf '%s\n' "Cannot pass '--batch-dl' and '--filename' together, ignoring"
+    opts+=("${default_filename}")
 fi
 
 if [[ "${batchfile}" ]]; then
     youtube-dl "${opts[@]}" --batch-file="${batchfile}"
-else
+elif [[ "${*}" ]]; then
     youtube-dl "${opts[@]}" "${@}"
+else
+    printf '%s\n' "No arguments entered, cancelling"
 fi
