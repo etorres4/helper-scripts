@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# List all users on the system
-
-sort -u <(awk -F ':' '{print $1}' < /etc/passwd)

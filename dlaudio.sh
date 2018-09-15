@@ -147,7 +147,7 @@ while true; do
 			shift
 			break
             ;;
-        -?*)
+        -*)
             echo "Error, not an option: ${1}" >&2
             exit 1
             ;;

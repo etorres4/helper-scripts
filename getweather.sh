@@ -22,7 +22,7 @@ while true; do
             shift
             break
             ;;
-        -?*)
+        -*)
             echo "Not an option: ${1}" >&2 && exit 1
             exit
             ;;
