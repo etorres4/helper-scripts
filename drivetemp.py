@@ -47,7 +47,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     dev = args.device
- 
+
     if verify_device_node(dev):
         mkel = retrieve_smart_temp(dev)
         print(f"{dev}: {calculate_temp(mkel)}°C")
