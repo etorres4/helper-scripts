@@ -155,6 +155,8 @@ elif [[ "${batchfile}" && -z "${filename}" ]]; then
 elif [[ "${batchfile}" && "${filename}" ]]; then
     printf '%s\n' "Cannot pass '--batch-dl' and '--filename' together, ignoring"
     opts+=("${default_filename}")
+else
+    opts+=("${default_filename}")
 fi
 
 if [[ "${batchfile}" ]]; then
