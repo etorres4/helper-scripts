@@ -1,2 +1,5 @@
-helper-scripts
+*.pkg.tar.xz*
+helper-scripts-*
 PKGBUILD
+pkg
+src
