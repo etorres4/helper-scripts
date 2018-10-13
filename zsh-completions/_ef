@@ -1,0 +1,13 @@
+#compdef ef
+
+# zsh completions for 'ef'
+# automatically generated with http://github.com/RobSis/zsh-completion-generator
+local arguments
+
+arguments=(
+  '-h[print this help page]'
+  {-E,--editor}'[use a different editor (default: /usr/bin/nvim)]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

@@ -1,0 +1,15 @@
+#compdef quickdel
+
+# zsh completions for 'quickdel'
+# automatically generated with http://github.com/RobSis/zsh-completion-generator
+local arguments
+
+arguments=(
+  {-d,--directories-only}'[only delete directories]'
+  {-h,--help}'[print this help page]'
+  {-i,--no-ignore}'[do not ignore .gitignore and .fdignore]'
+  {-I,--no-ignore-vcs}'[do not ignore .gitignore]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

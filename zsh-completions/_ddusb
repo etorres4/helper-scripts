@@ -1,0 +1,13 @@
+#compdef ddusb
+
+# zsh completions for 'ddusb'
+# automatically generated with http://github.com/RobSis/zsh-completion-generator
+local arguments
+
+arguments=(
+  {-h,--help}'[show this help message and exit]'
+  {-b,--bs}'[block size]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

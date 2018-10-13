@@ -1,0 +1,13 @@
+#compdef open
+
+# zsh completions for 'open'
+# automatically generated with http://github.com/RobSis/zsh-completion-generator
+local arguments
+
+arguments=(
+  {-d,--dir}'[select a directory to search in]'
+  {-h,--help}'[show this help page]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

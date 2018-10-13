@@ -1,0 +1,12 @@
+#compdef cptemplate
+
+# zsh completions for 'cptemplate'
+# automatically generated with http://github.com/RobSis/zsh-completion-generator
+local arguments
+
+arguments=(
+  {-h,--help}'[print this help page]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments
