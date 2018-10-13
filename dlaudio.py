@@ -18,7 +18,7 @@ parser.add_argument('-b', '--batch-dl',
                     help='provide the links from a text file')
 parser.add_argument('-f', '--format',
                     type=str,
-                    default='flac',
+                    default='ogg',
                     help='the format to use (default:flac)')
 parser.add_argument('-n', '--filename',
                     type=str,
