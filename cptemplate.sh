@@ -47,4 +47,4 @@ fd_opts+=('--type' 'f')
 template_file="$(fd "${fd_opts[@]}" . "${HOME}/Templates" | fzf --read0 --select-1 --exit-0 --no-mouse)"
 [[ -z "${template_file}" ]] && exit 1
 
-cp --interactive --verbose "${template_file}" "./${1:-"${template_file}"}"
+cp --interactive --verbose "${template_file}" "${1:-.}"
