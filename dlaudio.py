@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-"""
-Download audio using youtube-dl, passing
-a specific set of options specified by the user
-Imports:
-    argparse: for parsing command line arguments
-    subprocess: for running youtube-dl
+"""Download audio using youtube-dl, passing
+   a specific set of options specified by the user.
+=====
+Usage
+=====
+>>> dlaudio -f flac -n something "www.youtube.com"
 """
 
 import argparse
@@ -19,7 +19,7 @@ parser.add_argument('-b', '--batch-dl',
 parser.add_argument('-f', '--format',
                     type=str,
                     default='ogg',
-                    help='the format to use (default:flac)')
+                    help='the format to use (default:ogg)')
 parser.add_argument('-n', '--filename',
                     type=str,
                     help='the name of the downloaded file (without extension)')
@@ -57,4 +57,4 @@ elif len(args.urls) == 0:
 else:
     dl_opts += args.urls
 
-dl = subprocess.run(['youtube-dl'] + dl_opts)
+dl = subprocess.run(['youtube-dl'].extend(dl_opts))
