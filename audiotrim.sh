@@ -16,6 +16,10 @@ while true; do
             printHelp
             exit
             ;;
+        -*)
+            printf '%s\n' "Unknown option: ${1}"
+            exit 1
+            ;;
         --)
             shift
             continue
@@ -26,9 +30,13 @@ while true; do
     esac
 done
 
-readonly infile=${1}
-readonly starttime=${2}
-readonly stoptime=${3}
-readonly outfile=${4}
+readonly infile="${1}"
+readonly starttime="${2}"
+readonly stoptime="${3}"
+readonly outfile="${4}"
+readonly format="${1%.*}"
 
-ffmpeg -i "${infile}" -ss "${starttime}" -to "${stoptime}" -c copy "${outfile}"
+[[ -z "${infile}" ]] && printf '%s\n' "No file entered." >&2 exit 1
+[[ ! -f "${infile}" ]] && printf '%s\n' "Not a file: ${infile}" >&2 exit 2
+
+ffmpeg -i "${infile}" -ss "${starttime}" -to "${stoptime}" -c copy "${outfile:-"${outfile%.*}-trimmed.${format}"}"
