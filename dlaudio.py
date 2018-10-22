@@ -18,8 +18,8 @@ parser.add_argument('-b', '--batch-dl',
                     help='provide the links from a text file')
 parser.add_argument('-f', '--format',
                     type=str,
-                    default='ogg',
-                    help='the format to use (default:ogg)')
+                    default='opus',
+                    help='the format to use')
 parser.add_argument('-n', '--filename',
                     type=str,
                     help='the name of the downloaded file (without extension)')
