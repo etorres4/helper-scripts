@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # quickdel - delete any file matching a query
-#
 # Dependencies:
-#   - fd
+# fd
 
 printHelp() {
 cat << EOF
