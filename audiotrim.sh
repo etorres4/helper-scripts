@@ -22,7 +22,7 @@ while true; do
             ;;
         --)
             shift
-            continue
+            break
             ;;
         *)
             break
@@ -36,7 +36,7 @@ readonly stoptime="${3}"
 readonly outfile="${4}"
 readonly format="${1%.*}"
 
-[[ -z "${infile}" ]] && printf '%s\n' "No file entered." >&2 exit 1
-[[ ! -f "${infile}" ]] && printf '%s\n' "Not a file: ${infile}" >&2 exit 2
+[[ -z "${infile}" ]] && printf '%s\n' "No file entered." >&2 exit 2
+[[ ! -f "${infile}" ]] && printf '%s\n' "Not a file: ${infile}" >&2 exit 3
 
 ffmpeg -i "${infile}" -ss "${starttime}" -to "${stoptime}" -c copy "${outfile:-"${outfile%.*}-trimmed.${format}"}"
