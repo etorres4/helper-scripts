@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-""" ddusb - write an ISO image to a usb drive
-Dependencies:
-    - dd (coreutils)
-"""
+"""Write an ISO image to a usb drive using dd."""
 
 import argparse
+import configparser
 import pathlib
 import subprocess
+
+# TODO add a config file for blacklisting certain devices e.g. /dev/sda
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--bs", default=512, help="block size", metavar="bs")
@@ -26,8 +26,12 @@ print(f"Input file: {input_file}")
 print(f"Block device: {block_device}")
 print(f"Block size: {block_size}")
 
-subprocess.run(["dd", f"if={input_file}",
-                f"of={block_device}", f"bs={block_size}", "status=progress"])
-
-# ensure process is finished before exiting
-subprocess.run(['sync'])
+try:
+    subprocess.run(["dd", f"if={input_file}",
+                    f"of={block_device}",
+                    f"bs={block_size}",
+                    "status=progress"], check=True)
+except subprocess.CalledProcessError:
+    exit(1)
+else:
+    subprocess.run(['sync'])
