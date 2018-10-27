@@ -5,7 +5,7 @@
 =====
 Usage
 =====
->>> dlaudio -f flac -n something "www.youtube.com"
+>>> dlaudio -f flac -n <filename> "<url>"
 """
 
 import argparse
@@ -20,7 +20,7 @@ if __name__ == '__main__':
                         help='provide the links from a text file')
     parser.add_argument('-f', '--format',
                         type=str,
-                        default='opus',
+                        default='flac',
                         help='the format to use')
     parser.add_argument('-n', '--filename',
                         type=str,
