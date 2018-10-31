@@ -1,41 +1,48 @@
 #!/usr/bin/env python
-""" Check the temperature of the drive
+"""Check the temperature of a drive.
 Functions:
     verify_device_node(query)
         - Check if query is a device node
     retrieve_smart_temp(device_node)
         - Retrieve specified drive temperature in mKelvin
-    calculate_temp(mkel_temp)
+    convert_to_celsius(mkel_temp)
         - Given mkel_temp, convert it into °C
 """
 
 import argparse
 import pathlib
-
-from plumbum.cmd import sudo
+import subprocess
 
 
 def verify_device_node(query):
-    """ Check if query is a device node
-    Return True or False
+    """Check if query is a device node.
+    :param query: input that refers to a device
+    :type query: a path-like object
+    :returns: True if query is a device node, False if otherwise
+    :rtype: bool
     """
     return pathlib.Path(query).is_block_device()
 
 
 def retrieve_smart_temp(device_node):
-    """ Retrieve specified drive temperature in mKelvin
-    device_node: the device to retrieve a temperature for
-    Returns the output of skdump
+    """Retrieve specified drive's temperature.
+    :param device_node: device to retrieve temperature for
+    :type device_node: str
+    :returns: output of skdump in mKelvin
+    :rtype: str
     """
-    dump_cmd = sudo['skdump', '--temperature', device_node]
-    output = dump_cmd()
-    return output
+    dump_cmd = subprocess.run(['sudo', 'skdump', '--temperature',
+                               device_node], capture_output=True,
+                               text=True)
+    return dump_cmd.stdout
 
 
-def calculate_temp(mkel_temp):
-    """ Given mkel_temp, convert it into °C
-    mkel_temp: the temperature in mKelvin
-    Returns the temperature converted into degrees celsius
+def convert_to_celsius(mkel_temp):
+    """Given mkel_temp, convert it into °C.
+    :param mkel_temp: the temperature in mKelvin
+    :type mkel_temp: str
+    :returns: temperature converted into degrees celsius
+    :rtype: str
     """
     return (float(mkel_temp)/1000) - 273.15
 
@@ -50,7 +57,7 @@ if __name__ == '__main__':
 
     if verify_device_node(dev):
         mkel = retrieve_smart_temp(dev)
-        print(f"{dev}: {calculate_temp(mkel)}°C")
+        print(f"{dev}: {convert_to_celsius(mkel)}°C")
     else:
         print("Not a device node.")
         exit(1)
