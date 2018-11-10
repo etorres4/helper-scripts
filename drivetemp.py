@@ -29,12 +29,13 @@ def retrieve_smart_temp(device_node):
     :param device_node: device to retrieve temperature for
     :type device_node: str
     :returns: output of skdump in mKelvin
-    :rtype: str
+    :rtype: float
     """
     dump_cmd = subprocess.run(['sudo', 'skdump', '--temperature',
-                               device_node], capture_output=True,
-                               text=True)
-    return dump_cmd.stdout
+                               device_node],
+                              capture_output=True,
+                              text=True)
+    return float(dump_cmd.stdout)
 
 
 def convert_to_celsius(mkel_temp):
@@ -44,7 +45,7 @@ def convert_to_celsius(mkel_temp):
     :returns: temperature converted into degrees celsius
     :rtype: str
     """
-    return (float(mkel_temp)/1000) - 273.15
+    return (mkel_temp/1000) - 273.15
 
 
 if __name__ == '__main__':
