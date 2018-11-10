@@ -2,7 +2,7 @@
 # edit - fuzzy find a file and edit it
 # Dependencies
 #  - fd
-#  - fzf
+#  - fzy
 
 printHelp() {
 cat << EOF
@@ -30,7 +30,6 @@ editor=
 declare -a fd_opts
 fd_opts+=('--hidden')
 fd_opts+=('--type' 'f')
-fd_opts+=('--print0')
 fd_opts+=('--no-ignore-vcs')
 
 while true; do
@@ -111,9 +110,9 @@ if [[ -z "${editor:-${EDITOR}}" ]]; then
 fi
 
 if [[ "${dir}" ]]; then
-    file="$(fd "${fd_opts[@]}" . -- "${dir}" | fzf --read0 --select-1 --exit-0 --no-mouse)"
+    file="$(fd "${fd_opts[@]}" . -- "${dir}" | fzy)"
 else
-    file="$(fd "${fd_opts[@]}" | fzf --read0 --select-1 --exit-0 --no-mouse)"
+    file="$(fd "${fd_opts[@]}" | fzy)"
 fi
 
 [[ ! "${file}" ]] && exit 1
