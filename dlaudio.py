@@ -8,6 +8,9 @@ Usage
 >>> dlaudio -f flac -n <filename> "<url>"
 """
 
+# TODO add support for downloading in flac, and then reencoding it
+# in opus
+
 import argparse
 import pathlib
 import subprocess
