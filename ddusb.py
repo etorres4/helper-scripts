@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Write an ISO image to a usb drive using dd."""
 
 import argparse
