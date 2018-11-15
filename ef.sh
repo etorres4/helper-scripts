@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # ef - fuzzy find a file and edit it
 #
 # Dependencies

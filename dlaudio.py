@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Download audio using youtube-dl, passing
    a specific set of options specified by the user.
 

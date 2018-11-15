@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 # Trim an audio file given a startpoint and an endpoint
 
 printHelp() {

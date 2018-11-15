@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Check the temperature of a drive.
 Functions:
     verify_device_node(query)

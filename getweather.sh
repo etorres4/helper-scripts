@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Obtain a weather forecast
 
 printHelp() {

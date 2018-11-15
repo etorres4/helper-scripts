@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # quickdel - delete any file matching a query
 # Dependencies:
 # fd
