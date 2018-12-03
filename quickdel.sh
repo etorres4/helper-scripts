@@ -3,6 +3,8 @@
 # Dependencies:
 # fd
 
+set -o nounset
+
 printHelp() {
 cat << EOF
 Fuzzy find and delete files matching patterns
@@ -20,7 +22,6 @@ EOF
 # Pre-run correctness checks
 unset files
 unset fd_opts
-ans=
 
 declare -a files
 declare -a fd_opts

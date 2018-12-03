@@ -1,6 +1,8 @@
 #!/bin/bash
 # Trim an audio file given a startpoint and an endpoint
 
+set -o nounset
+
 printHelp() {
 cat << EOF
 Usage: audiotrim [input file] [start time] [stop time] [output file]
