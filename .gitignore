@@ -1,5 +1,5 @@
 *.pkg.tar.xz*
-helper-scripts-*
+helper-scripts
 PKGBUILD
 pkg
 src
