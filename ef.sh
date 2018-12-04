@@ -5,8 +5,6 @@
 #   - fzf
 #   - mlocate
 
-set -o nounset
-
 printHelp() {
 cat << done
 Usage: ef [-h|--help] [-E|--editor editor] [patterns]

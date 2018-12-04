@@ -5,8 +5,6 @@
 #   - fd
 #   - fzf
 
-set -o nounset
-
 printHelp() {
 cat << EOF
 Usage: cptemplate [-h,--help] [options] [filename]

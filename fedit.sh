@@ -13,7 +13,6 @@ Options:
     -e, --etc       edit a file in /etc
     -E, --editor    use a given editor (default: ${EDITOR:-none})
     -h, --help      print this help page
-    -l, --locate    use locate to search for files
 EOF
 }
 
@@ -24,7 +23,6 @@ readonly noeditor_error="Error, no editor entered"
 # Pre-run correctness checks
 unset fd_opts
 file=
-find_cmd='fd'
 dir=
 editor=
 
@@ -92,11 +90,6 @@ while true; do
             printHelp
             exit
             ;;
-        '-l'|'--locate')
-            find_cmd='locate --all --ignore-case --null'
-            shift
-            continue
-            ;;
         --)
             shift
             break
@@ -120,7 +113,7 @@ if [[ "${dir}" ]]; then
     fd_opts+=('.' '--' "${dir}")
 fi
 
-file="$("${find_cmd}" "${fd_opts[@]}" | fzf --read0 --select-1 --exit-0)"
+file="$(fd "${fd_opts[@]}" | fzf --read0 --select-1 --exit-0)"
 
 [[ ! "${file}" ]] && exit 1
 
