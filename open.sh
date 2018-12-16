@@ -6,8 +6,6 @@
 #   - fzf
 #   - xdg-utils (xdg-open executable)
 
-set -x
-
 printHelp() {
 cat << done
 Fuzzy find and run xdg-open on a file
