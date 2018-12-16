@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/bash
 # Copy a file from ~/Templates to a given name
 #
 # Dependencies:
-#   - fd
+#   - fd (soft)
 #   - fzf
 
 printHelp() {
@@ -34,17 +34,29 @@ while true; do
     esac
 done
 
+# check for existence of fd and fzf binaries
+if [[ ! -x '/usr/bin/fzf' ]]; then
+    printf '%s\n' 'fzf is not installed on the system'
+    exit 1
+fi
+
 declare -a find_opts
-find_opts+=('.')
-find_opts+=('-mindepth' '0')
-find_opts+=('-type' 'f')
-find_opts+=('-print0')
+template_dir="${HOME}/Templates"
 
-declare -a fd_opts
-fd_opts+=('--print0')
-fd_opts+=('--type' 'f')
+if [[ -x '/usr/bin/fd' ]]; then
+    find_bin='/usr/bin/fd'
+    find_opts+=('--print0')
+    find_opts+=('--type' 'f')
+    find_opts+=('.' "${template_dir}")
+else
+    find_bin='/usr/bin/find'
+    find_opts+=("${template_dir}")
+    find_opts+=('-mindepth' '0')
+    find_opts+=('-type' 'f')
+    find_opts+=('-print0')
+fi
 
-template_file="$(fd "${fd_opts[@]}" . "${HOME}/Templates" | fzf --read0 --select-1 --exit-0 --no-mouse)"
+template_file="$("${find_bin}" "${find_opts[@]}" | fzf --read0 --select-1 --exit-0 --no-mouse)"
 [[ -z "${template_file}" ]] && exit 1
 
 cp --interactive --verbose "${template_file}" "${1:-.}"

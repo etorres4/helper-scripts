@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/bash
 # open - fuzzy find, select, and open a file using xdg-open
 #
 # Dependencies:
 #   - fd
 #   - fzf
 #   - xdg-utils (xdg-open executable)
+
+set -x
 
 printHelp() {
 cat << done
@@ -18,10 +20,15 @@ Options:
 done
 }
 
+[[ ! -x '/usr/bin/fzf' ]] && exit 1
+[[ ! -x '/usr/bin/xdg-open' ]] && exit 1
+
 # Error messages
 readonly nodir_error="Error: no directory given"
 
 # Pre-run correctness checks
+unset find_opts
+find_bin=
 dir=
 file=
 
@@ -73,14 +80,22 @@ while true; do
     esac
 done
 
-if [[ -n "${dir}" ]]; then
-    file="$(fd --hidden --type f --print0 . -- "${dir}" | fzf --read0 --select-1 --exit-0 --no-mouse)"
+declare -a find_opts
+
+if [[ -x '/usr/bin/fd' ]]; then
+    find_bin='/usr/bin/fd'
+    find_opts+=('--print0')
+    find_opts+=('--type' 'f')
+    [[ -n "${dir}" ]] && find_opts+=('.' -- "${dir}")
 else
-    file="$(fd --hidden --type f --print0 | fzf --read0 --select-1 --exit-0 --no-mouse)"
+    find_bin='/usr/bin/find'
+    [[ -n "${dir}" ]] && find_opts+=("${dir}")
+    find_opts+=('-mindepth' '0')
+    find_opts+=('-type' 'f')
+    find_opts+=('-print0')
 fi
 
-if [[ -z "${file}" ]]; then
-    exit 1
-fi
+file="$("${find_bin}" "${find_opts[@]}" | fzf --read0 --select-1 --exit-0)"
+[[ -z "${file}" ]] && exit 1
 
 xdg-open "${file}"
