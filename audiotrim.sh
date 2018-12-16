@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/usr/bin/bash
 # Trim an audio file given a startpoint and an endpoint
+# Dependencies: ffmpeg
 
 printHelp() {
 cat << EOF
@@ -16,19 +17,24 @@ while true; do
             printHelp
             exit
             ;;
-        -*)
-            printf '%s\n' "Unknown option: ${1}"
-            exit 1
-            ;;
         --)
             shift
             break
+            ;;
+        -*)
+            printf '%s\n' "Unknown option: ${1}"
+            exit 1
             ;;
         *)
             break
             ;;
     esac
 done
+
+if [[ ! -x '/usr/bin/ffmpeg' ]]; then
+    printf '%s\n' 'ffmpeg program is not installed'
+    exit 1
+fi
 
 readonly infile="${1}"
 readonly starttime="${2}"
