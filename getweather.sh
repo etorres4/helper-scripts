@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # Obtain a weather forecast
 
 printHelp() {
@@ -32,6 +32,7 @@ while true; do
     esac
 done
 
+[[ ! -x '/usr/bin/curl' ]] && echo 'curl is required for this script' && exit 1
 [[ -z "${@}" ]] && echo "Please enter a location" >&2 && exit 1
 
 xargs --no-run-if-empty -I {} curl wttr.in/{} <<< "${@}"
