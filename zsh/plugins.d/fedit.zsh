@@ -1,5 +1,4 @@
-#!/usr/bin/bash
-
+# call the fedit script
 _etcedit() {
     fedit -e
 }
