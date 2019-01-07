@@ -32,7 +32,7 @@ while true; do
 done
 
 if [[ ! -x '/usr/bin/ffmpeg' ]]; then
-    printf '%s\n' 'ffmpeg program is not installed'
+    printf '%s\n' 'ffmpeg program is not installed' >&2
     exit 1
 fi
 
