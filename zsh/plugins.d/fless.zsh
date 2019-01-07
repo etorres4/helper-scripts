@@ -1,5 +1,5 @@
 # key bindings for fless script
-_fless() {
+fless() {
     /usr/bin/fless
 }
 
