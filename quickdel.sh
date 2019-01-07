@@ -27,6 +27,8 @@ declare -a fd_opts
 declare -r blue='\033[0;34m'
 declare -r nocolor='\033[0;0m'
 
+[[ ! -x '/usr/bin/fd' ]] && echo 'fd is not present, cancelling' >&2 && exit 1
+
 while true; do
     case "${1}" in
         '-d'|'--directories-only')
