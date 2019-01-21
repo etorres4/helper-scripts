@@ -13,7 +13,11 @@ import argparse
 import pathlib
 import subprocess
 
+# ========== Constants ==========
+DUMP_CMD = ['skdump', '--temperature']
 
+
+# ========== Functions ==========
 def verify_device_node(query):
     """Check if query is a device node.
     :param query: input that refers to a device
@@ -31,11 +35,10 @@ def retrieve_smart_temp(device_node):
     :returns: output of skdump in mKelvin
     :rtype: float
     """
-    dump_cmd = subprocess.run(['sudo', 'skdump', '--temperature',
-                               device_node],
-                              capture_output=True,
-                              text=True)
-    return float(dump_cmd.stdout)
+    temp = subprocess.run(DUMP_CMD + device_node,
+                          capture_output=True,
+                          text=True).stdout
+    return float(temp)
 
 
 def convert_to_celsius(mkel_temp):

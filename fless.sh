@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 # fless - fuzzy find a file and run less on it
 # Dependencies
-#  - fd (soft)
-#  - fzf
+# - fd (soft)
+# - fzf
 
-_help() {
+help() {
 cat << EOF
 Usage: fless [-h|--help] [-b|--boot] [-d|--dir directory] [-e|--etc]
 Options:
@@ -58,7 +58,7 @@ while true; do
             continue
             ;;
         '-h'|'--help')
-            printHelp
+            help
             exit
             ;;
         --)
