@@ -1,65 +1,61 @@
 #!/usr/bin/python3
-"""Download audio using youtube-dl, passing
-   a specific set of options specified by the user.
+"""Download audio using youtube-dl.
 
-=====
-Usage
-=====
->>> dlaudio -f flac -n <filename> "<url>"
+Dependencies:
+=============
+* youtube-dl
 """
-
-# TODO add support for downloading in flac, and then reencoding it
-# in opus
 
 import argparse
 import pathlib
 import subprocess
 
+# =========== Constants ==========
+YOUTUBE_DL_BIN = '/usr/bin/youtube-dl'
+DEFAULT_FILENAME = f"{pathlib.Path.home()}/Music/%(title)s.%(ext)s"
+
+# ========== Error Codes ==========
+E_NOURLS = 2
+
+# =========== Functions ==========
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-b', '--batch-dl',
-                        dest='batchfile',
+    parser.add_argument('-b', '--batchfile',
                         type=str,
+                        nargs=1,
                         help='provide the links from a text file')
     parser.add_argument('-f', '--format',
                         type=str,
-                        default='flac',
+                        default='opus',
                         help='the format to use')
     parser.add_argument('-n', '--filename',
                         type=str,
-                        help='the name of the downloaded file (without extension)')
+                        help='downloaded filename (without extension)')
     parser.add_argument('urls',
                         nargs='*',
                         help='video URLs')
     args = parser.parse_args()
 
-    default_filename = f"{pathlib.Path.home()}/Music/%(title)s.%(ext)s"
-
-    dl_opts = []
-    dl_opts.append('--no-part')
-    dl_opts.append('--no-continue')
-    dl_opts.append('--extract-audio')
-    dl_opts.append(f"--audio-format={args.format}")
-
-    dl_opts.append(f"--output={args.filename}")
+    dl_opts = [YOUTUBE_DL_BIN,
+               '--no-part',
+               '--no-continue',
+               '--extract-audio',
+               '--audio-format={args.format}']
 
     # filename handling
-    # -b and -n should not be used together
-    if args.filename and args.batchfile:
-        print('Ignoring --batch-dl and --filename')
-        dl_opts.append(f"--output={default_filename}")
-    elif args.filename:
-        dl_opts.append(f"--output={pathlib.Path.home()}/Music/{args.filename}.%(ext)s")
+    # if -b is used, DEFAULT_FILENAME must take precedence
+    if args.filename:
+        dl_opts.append('--output={args.filename}')
     else:
-        dl_opts.append(f"--output={default_filename}")
+        dl_opts.append('--output={DEFAULT_FILENAME}')
 
     # URL handling
     if args.batchfile:
         dl_opts.append(f"--batch-file={args.batchfile}")
-    elif len(args.urls) == 0:
+    elif not args.urls:
         print("URLs are required")
-        exit(2)
+        exit(E_NOURLS)
     else:
         dl_opts.extend(args.urls)
 
-    dl = subprocess.run(['youtube-dl'] + dl_opts)
+    subprocess.run(dl_opts)
