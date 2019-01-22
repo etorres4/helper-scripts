@@ -51,17 +51,17 @@ def convert_to_celsius(mkel_temp):
     return (mkel_temp/1000) - 273.15
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('device', help='device node to retrieve\
-                        the temperature for', metavar='dev')
-    args = parser.parse_args()
+# ========== Main Script ==========
+parser = argparse.ArgumentParser()
+parser.add_argument('device', help='device node to retrieve\
+                    the temperature for', metavar='dev')
+args = parser.parse_args()
 
-    dev = args.device
+dev = args.device
 
-    if verify_device_node(dev):
-        mkel = retrieve_smart_temp(dev)
-        print(f"{dev}: {convert_to_celsius(mkel)}°C")
-    else:
-        print("Not a device node.")
-        exit(1)
+if verify_device_node(dev):
+    mkel = retrieve_smart_temp(dev)
+    print(f"{dev}: {convert_to_celsius(mkel)}°C")
+else:
+    print("Not a device node.")
+    exit(1)
