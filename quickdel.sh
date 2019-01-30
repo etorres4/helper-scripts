@@ -1,7 +1,8 @@
 #!/bin/bash
-# quickdel - delete any file matching a query
-# Dependencies:
-# fd
+## quickdel - delete any file matching a query
+## Dependencies:
+## * bash
+## * fd
 
 printHelp() {
 cat << EOF
@@ -65,7 +66,7 @@ while true; do
 done
 
 # Prevent fd from selecting everything
-[[ -z "${*}" ]] && printf '%s\n' "No queries entered, cancelling" >&2 && exit 1
+[[ -z "${@}" ]] && printf '%s\n' "No queries entered, cancelling" >&2 && exit 1
 
 for pattern in "${@}"; do
     while IFS= read -r -d '' file; do
