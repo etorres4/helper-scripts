@@ -26,7 +26,9 @@ E_NOFILESELECTED = 3
 FIND_CMD = shutil.which('fd')
 FIND_OPTS = ['--hidden', '--print0', '--type', 'f', '--no-ignore-vcs']
 FZF_CMD = shutil.which('fzf')
-FZF_OPTS = ['--read0', '--select-1', '--exit-0']
+FZF_OPTS = ['--read0', '--select-1', '--exit-0', '--print0']
+
+LOCALE = 'utf-8'
 
 
 # ========== Functions ==========
@@ -54,6 +56,21 @@ def select_editor(editor_override=None):
         return shutil.which('vim')
     else:
         raise FileNotFoundError('An editor could not be resolved')
+
+def gen_editor_cmd(filename):
+    """Generate a command line to run for editing a file based on
+    permissions.
+
+    :param filename: name of file to edit
+    :type filename: str or path-like object
+    :returns: command to execute to edit file
+    :rtype: list
+    """
+    # possible for a race condition to occur here
+    if os.access(filename, os.W_OK):
+        return [editor, filename]
+    else:
+        return ['sudo', '--edit', filename]
 
 
 # ========== Main Script ==========
@@ -93,14 +110,16 @@ if args.dir is not None:
 final_find_cmd.extend(extra_opts)
 
 files = subprocess.run(final_find_cmd,
-                       text=True,
                        capture_output=True)
-filename = subprocess.run([FZF_CMD] + FZF_OPTS,
-                          input=files.stdout,
-                          text=True,
-                          stdout=subprocess.PIPE).stdout
+fzf_output = subprocess.run([FZF_CMD] + FZF_OPTS,
+                            input=files.stdout,
+                            stdout=subprocess.PIPE).stdout
+
+# filename is null terminated
+filename = fzf_output.decode(LOCALE).strip('\x00')
 
 if filename is not None:
-    subprocess.run([editor, filename.strip('\n')])
+    cmd = gen_editor_cmd(filename.strip('\n'))
+    subprocess.run(cmd)
 else:
     exit(E_NOFILESELECTED)
