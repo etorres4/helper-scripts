@@ -4,7 +4,7 @@ _fedit() {
 }
 
 _etcedit() {
-    /usr/bin/fedit -e
+    /usr/bin/fedit -E
 }
 
 zle -N fedit
