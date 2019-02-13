@@ -115,10 +115,10 @@ fzf_output = subprocess.run([FZF_CMD] + FZF_OPTS,
                             input=files.stdout,
                             stdout=subprocess.PIPE).stdout
 
-# filename is null terminated
+# Filename is null terminated
 filename = fzf_output.decode(LOCALE).strip('\x00')
 
-if filename is not None:
+if not filename == '':
     cmd = gen_editor_cmd(filename.strip('\n'))
     subprocess.run(cmd)
 else:
