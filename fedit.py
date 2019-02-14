@@ -23,10 +23,12 @@ E_NOEDITORFOUND = 2
 E_NOFILESELECTED = 3
 
 # Commands
-FIND_CMD = shutil.which('fd')
+FIND_CMD = '/usr/bin/fd'
 FIND_OPTS = ['--hidden', '--print0', '--type', 'f', '--no-ignore-vcs']
-FZF_CMD = shutil.which('fzf')
+FZF_CMD = '/usr/bin/fzf'
 FZF_OPTS = ['--read0', '--select-1', '--exit-0', '--print0']
+LOCATE_CMD = '/usr/bin/locate'
+LOCATE_OPTS = ['--all', '--ignore-case', '--null']
 
 LOCALE = 'utf-8'
 
@@ -57,6 +59,7 @@ def select_editor(editor_override=None):
     else:
         raise FileNotFoundError('An editor could not be resolved')
 
+
 def gen_editor_cmd(filename):
     """Generate a command line to run for editing a file based on
     permissions.
@@ -71,6 +74,50 @@ def gen_editor_cmd(filename):
         return [editor, filename]
     else:
         return ['sudo', '--edit', filename]
+
+
+def run_fzf(files):
+    """Run fzf on a stream of searched files for the user to select.
+
+    :param files: stream of null-terminated files to read
+    :type files: bytes stream (stdout of a completed process)
+    :returns: selected file
+    :rtype: str
+    """
+    selected_file = subprocess.run([FZF_CMD] + FZF_OPTS,
+                                   input=files,
+                                   stdout=subprocess.PIPE).stdout
+
+    return selected_file.decode(LOCALE).strip('\x00')
+
+
+def find_files(directory=None):
+    """Use a find-based program to locate files, then pass to fzf.
+
+    :param directory: directory to search for files
+    :type directory: str
+    :returns: path of user-selected file
+    :rtype: bytes
+    """
+    cmd = [FIND_CMD] + FIND_OPTS
+    if directory is not None:
+        cmd.extend(['--', '.', directory])
+
+    return subprocess.run(cmd, capture_output=True).stdout
+
+
+def locate_files(patterns):
+    """Use a locate-based program to locate files, then pass to fzf.
+
+    :param patterns: patterns to pass to locate
+    :type patterns: list
+    :returns: path of user-selected file
+    :rtype: bytes
+    """
+    cmd = [LOCATE_CMD] + LOCATE_OPTS
+    cmd.extend(patterns)
+
+    return subprocess.run(cmd, capture_output=True).stdout
 
 
 # ========== Main Script ==========
@@ -91,11 +138,14 @@ parser.add_argument('-E', '--etc',
                     help='edit a file in /etc')
 parser.add_argument('-e', '--editor',
                     help='use a given editor')
+parser.add_argument('patterns',
+                    type=str,
+                    nargs='*',
+                    help='patterns to pass to locate')
 
 args = parser.parse_args()
 
 final_find_cmd = [FIND_CMD] + FIND_OPTS
-extra_opts = []
 editor = ''
 
 try:
@@ -104,22 +154,17 @@ except FileNotFoundError as e:
     print(e)
     exit(E_NOEDITORFOUND)
 
-if args.dir is not None:
-    extra_opts.extend(['.', '--', args.dir])
+# If patterns were passed, use locate
+# Otherwise check for -d and use fd
+if not args.patterns == []:
+    files = locate_files(args.patterns)
+else:
+    files = find_files(args.dir)
 
-final_find_cmd.extend(extra_opts)
+selected_file = run_fzf(files)
 
-files = subprocess.run(final_find_cmd,
-                       capture_output=True)
-fzf_output = subprocess.run([FZF_CMD] + FZF_OPTS,
-                            input=files.stdout,
-                            stdout=subprocess.PIPE).stdout
-
-# Filename is null terminated
-filename = fzf_output.decode(LOCALE).strip('\x00')
-
-if not filename == '':
-    cmd = gen_editor_cmd(filename.strip('\n'))
+if not selected_file == '':
+    cmd = gen_editor_cmd(selected_file)
     subprocess.run(cmd)
 else:
     exit(E_NOFILESELECTED)
