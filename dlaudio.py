@@ -8,10 +8,11 @@ Dependencies:
 
 import argparse
 import pathlib
+import shutil
 import subprocess
 
 # =========== Constants ==========
-YOUTUBE_DL_BIN = '/usr/bin/youtube-dl'
+YOUTUBE_DL_BIN = shutil.which('youtube-dl')
 DEFAULT_FILENAME = f"{pathlib.Path.home()}/Music/%(title)s.%(ext)s"
 
 # ========== Error Codes ==========
