@@ -50,13 +50,16 @@ def select_editor(editor_override=None):
     :rtype: str
     :raises: FileNotFoundError if an editor could not be resolved
     """
+    editor = None
+
     if editor_override is not None:
-        return shutil.which(editor_override)
+        editor = shutil.which(editor_override)
     elif 'EDITOR' in os.environ:
-        return shutil.which(os.environ.get('EDITOR'))
+        editor = shutil.which(os.environ.get('EDITOR'))
     elif shutil.which('vim') is not None:
-        return shutil.which('vim')
-    else:
+        editor = shutil.which('vim')
+
+    if editor is None:
         raise FileNotFoundError('An editor could not be resolved')
 
 
