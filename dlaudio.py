@@ -21,8 +21,6 @@ E_NOURLS = 2
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
 parser.add_argument('-b', '--batchfile',
-                    type=str,
-                    nargs=1,
                     help='provide the links from a text file')
 parser.add_argument('-f', '--format',
                     type=str,
@@ -40,22 +38,22 @@ dl_opts = [YOUTUBE_DL_BIN,
            '--no-part',
            '--no-continue',
            '--extract-audio',
-           '--audio-format={args.format}']
+           f"--audio-format={args.format}"]
 
 # filename handling
 # if -b is used, DEFAULT_FILENAME must take precedence
-if args.filename:
-    dl_opts.append('--output={args.filename}')
+if args.filename is not None and args.batchfile is None:
+    dl_opts.append(f"--output={args.filename}")
 else:
-    dl_opts.append('--output={DEFAULT_FILENAME}')
+    dl_opts.append(f"--output={DEFAULT_FILENAME}")
 
 # URL handling
-if args.batchfile:
+if args.batchfile is not None:
     dl_opts.append(f"--batch-file={args.batchfile}")
-elif not args.urls:
+elif args.urls is not None:
+    dl_opts.extend(args.urls)
+else:
     print("URLs are required")
     exit(E_NOURLS)
-else:
-    dl_opts.extend(args.urls)
 
 subprocess.run(dl_opts)
