@@ -62,6 +62,8 @@ def select_editor(editor_override=None):
     if editor is None:
         raise FileNotFoundError('An editor could not be resolved')
 
+    return editor
+
 
 def gen_editor_cmd(filename):
     """Generate a command line to run for editing a file based on
