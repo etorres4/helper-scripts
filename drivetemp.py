@@ -35,7 +35,7 @@ def retrieve_smart_temp(device_node):
     :returns: output of skdump in mKelvin
     :rtype: float
     """
-    temp = subprocess.run(DUMP_CMD + device_node,
+    temp = subprocess.run(DUMP_CMD + [device_node],
                           capture_output=True,
                           text=True).stdout
     return float(temp)
