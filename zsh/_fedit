@@ -1,0 +1,32 @@
+#compdef fedit
+# Fuzzy find a file and then edit it
+
+# ========== Shortcuts ==========
+_fedit() {
+    /usr/bin/fedit
+}
+
+_etcedit() {
+    /usr/bin/fedit --etc
+}
+
+zle -N fedit
+bindkey -M viins '^o' _fedit
+
+zle -N _etcedit
+bindkey -M viins '^e' _etcedit
+
+# ========== Completions ==========
+local arguments
+
+arguments=(
+$argument_list
+  {-h, --help}'[show this help message and exit]'
+  {-b, --boot}'[edit a file in /boot]'
+  {-d, --dir}'[edit a file in a given directory]'
+  {-E, --etc}'[edit a file in /etc]'
+  {-e, --editor}'[use a given editor]'
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

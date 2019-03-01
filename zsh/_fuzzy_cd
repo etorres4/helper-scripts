@@ -1,7 +1,10 @@
+#compdef fcd
 # Fuzzy cd from anywhere
 # Dependencies
-# - fzf
-# - mlocate
+# * fzf
+# * mlocate
+
+# ========== Shortcuts ==========
 cf() {
     [[ -z "${*}" ]] && return 1
     [[ ! -x /usr/bin/fzf ]] && return 1
@@ -18,3 +21,13 @@ cf() {
 }
 
 autoload -Uz cf
+
+# ========== Completions ==========
+local arguments
+
+arguments=(
+$argument_list
+  '*:filename:_files'
+)
+
+_arguments -s $arguments

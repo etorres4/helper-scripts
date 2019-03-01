@@ -1,7 +1,6 @@
 #compdef dlaudio
 
 # zsh completions for 'dlaudio'
-# automatically generated with http://github.com/RobSis/zsh-completion-generator
 local arguments
 
 arguments=(

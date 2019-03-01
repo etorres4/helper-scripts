@@ -1,7 +1,6 @@
 #compdef cptemplate
 
-# zsh completions for 'cptemplate'
-# automatically generated with http://github.com/RobSis/zsh-completion-generator
+# ========== Completions ==========
 local arguments
 
 arguments=(

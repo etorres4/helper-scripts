@@ -1,4 +1,6 @@
-# key bindings for fless script
+#compdef fless
+
+# ========== Shortcuts ==========
 fless() {
     /usr/bin/fless
 }
