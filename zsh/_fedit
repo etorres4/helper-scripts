@@ -4,10 +4,12 @@
 # ========== Shortcuts ==========
 _fedit() {
     /usr/bin/fedit
+    zle reset-prompt
 }
 
 _etcedit() {
     /usr/bin/fedit --etc
+    zle reset-prompt
 }
 
 zle -N fedit

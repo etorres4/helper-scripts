@@ -3,6 +3,7 @@
 # ========== Shortcuts ==========
 fless() {
     /usr/bin/fless
+    zle reset-prompt
 }
 
 zle -N fless
