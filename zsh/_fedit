@@ -1,24 +1,4 @@
 #compdef fedit
-# Fuzzy find a file and then edit it
-
-# ========== Shortcuts ==========
-_fedit() {
-    /usr/bin/fedit
-    zle reset-prompt
-}
-
-_etcedit() {
-    /usr/bin/fedit --etc
-    zle reset-prompt
-}
-
-zle -N fedit
-bindkey -M viins '^o' _fedit
-
-zle -N _etcedit
-bindkey -M viins '^e' _etcedit
-
-# ========== Completions ==========
 local arguments
 
 arguments=(

@@ -1,4 +1,3 @@
-#compdef fcd
 # Fuzzy cd from anywhere
 # Dependencies
 # * fzf
@@ -21,13 +20,3 @@ cf() {
 }
 
 autoload -Uz cf
-
-# ========== Completions ==========
-local arguments
-
-arguments=(
-$argument_list
-  '*:filename:_files'
-)
-
-_arguments -s $arguments

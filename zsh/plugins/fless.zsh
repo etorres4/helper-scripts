@@ -1,6 +1,4 @@
-#compdef fless
-
-# ========== Shortcuts ==========
+# Fuzzy-find a file and open it in less
 fless() {
     /usr/bin/fless
     zle reset-prompt
