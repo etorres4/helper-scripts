@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 # =========== Constants ==========
-YOUTUBE_DL_BIN = shutil.which('youtube-dl')
+YOUTUBE_DL_BIN = shutil.which("youtube-dl")
 DEFAULT_FILENAME = f"{pathlib.Path.home()}/Music/%(title)s.%(ext)s"
 
 # ========== Error Codes ==========
@@ -20,25 +20,23 @@ E_NOURLS = 2
 
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
-parser.add_argument('-b', '--batchfile',
-                    help='provide the links from a text file')
-parser.add_argument('-f', '--format',
-                    type=str,
-                    default='opus',
-                    help='the format to use')
-parser.add_argument('-n', '--filename',
-                    type=str,
-                    help='downloaded filename (without extension)')
-parser.add_argument('urls',
-                    nargs='*',
-                    help='video URLs')
+parser.add_argument("-b", "--batchfile", help="provide the links from a text file")
+parser.add_argument(
+    "-f", "--format", type=str, default="opus", help="the format to use"
+)
+parser.add_argument(
+    "-n", "--filename", type=str, help="downloaded filename (without extension)"
+)
+parser.add_argument("urls", nargs="*", help="video URLs")
 args = parser.parse_args()
 
-dl_opts = [YOUTUBE_DL_BIN,
-           '--no-part',
-           '--no-continue',
-           '--extract-audio',
-           f"--audio-format={args.format}"]
+dl_opts = [
+    YOUTUBE_DL_BIN,
+    "--no-part",
+    "--no-continue",
+    "--extract-audio",
+    f"--audio-format={args.format}",
+]
 
 # filename handling
 # if -b is used, DEFAULT_FILENAME must take precedence

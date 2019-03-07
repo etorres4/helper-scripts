@@ -14,7 +14,7 @@ import pathlib
 import subprocess
 
 # ========== Constants ==========
-DUMP_CMD = ['skdump', '--temperature']
+DUMP_CMD = ["skdump", "--temperature"]
 
 
 # ========== Functions ==========
@@ -35,9 +35,9 @@ def retrieve_smart_temp(device_node):
     :returns: output of skdump in mKelvin
     :rtype: float
     """
-    temp = subprocess.run(DUMP_CMD + [device_node],
-                          capture_output=True,
-                          text=True).stdout
+    temp = subprocess.run(
+        DUMP_CMD + [device_node], capture_output=True, text=True
+    ).stdout
     return float(temp)
 
 
@@ -48,13 +48,17 @@ def convert_to_celsius(mkel_temp):
     :returns: temperature converted into degrees celsius
     :rtype: str
     """
-    return (mkel_temp/1000) - 273.15
+    return (mkel_temp / 1000) - 273.15
 
 
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
-parser.add_argument('device', help='device node to retrieve\
-                    the temperature for', metavar='dev')
+parser.add_argument(
+    "device",
+    help="device node to retrieve\
+                    the temperature for",
+    metavar="dev",
+)
 args = parser.parse_args()
 
 dev = args.device

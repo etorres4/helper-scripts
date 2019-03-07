@@ -5,11 +5,11 @@ import argparse
 import requests
 
 # ========== Constants ==========
-WTTR_URI = 'http://wttr.in'
+WTTR_URI = "http://wttr.in"
 
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
-parser.add_argument('location')
+parser.add_argument("location")
 
 args = parser.parse_args()
 location = args.location

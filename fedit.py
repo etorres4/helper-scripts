@@ -15,22 +15,22 @@ import subprocess
 
 # ========== Constants ==========
 # Paths
-BOOT_DIR = '/boot'
-ETC_DIR = '/etc'
+BOOT_DIR = "/boot"
+ETC_DIR = "/etc"
 
 # Exit Codes
 E_NOEDITORFOUND = 2
 E_NOFILESELECTED = 3
 
 # Commands
-FIND_CMD = '/usr/bin/fd'
-FIND_OPTS = ['--hidden', '--print0', '--type', 'f', '--no-ignore-vcs']
-FZF_CMD = '/usr/bin/fzf'
-FZF_OPTS = ['--read0', '--select-1', '--exit-0', '--print0']
-LOCATE_CMD = '/usr/bin/locate'
-LOCATE_OPTS = ['--all', '--ignore-case', '--null']
+FIND_CMD = "/usr/bin/fd"
+FIND_OPTS = ["--hidden", "--print0", "--type", "f", "--no-ignore-vcs"]
+FZF_CMD = "/usr/bin/fzf"
+FZF_OPTS = ["--read0", "--select-1", "--exit-0", "--print0"]
+LOCATE_CMD = "/usr/bin/locate"
+LOCATE_OPTS = ["--all", "--ignore-case", "--null"]
 
-LOCALE = 'utf-8'
+LOCALE = "utf-8"
 
 
 # ========== Functions ==========
@@ -54,13 +54,13 @@ def select_editor(editor_override=None):
 
     if editor_override is not None:
         editor = shutil.which(editor_override)
-    elif 'EDITOR' in os.environ:
-        editor = shutil.which(os.environ.get('EDITOR'))
-    elif shutil.which('vim') is not None:
-        editor = shutil.which('vim')
+    elif "EDITOR" in os.environ:
+        editor = shutil.which(os.environ.get("EDITOR"))
+    elif shutil.which("vim") is not None:
+        editor = shutil.which("vim")
 
     if editor is None:
-        raise FileNotFoundError('An editor could not be resolved')
+        raise FileNotFoundError("An editor could not be resolved")
 
     return editor
 
@@ -78,7 +78,7 @@ def gen_editor_cmd(filename):
     if os.access(filename, os.W_OK):
         return [editor, filename]
     else:
-        return ['sudo', '--edit', filename]
+        return ["sudo", "--edit", filename]
 
 
 def run_fzf(files):
@@ -89,11 +89,11 @@ def run_fzf(files):
     :returns: selected file
     :rtype: str
     """
-    selected_file = subprocess.run([FZF_CMD] + FZF_OPTS,
-                                   input=files,
-                                   stdout=subprocess.PIPE).stdout
+    selected_file = subprocess.run(
+        [FZF_CMD] + FZF_OPTS, input=files, stdout=subprocess.PIPE
+    ).stdout
 
-    return selected_file.decode(LOCALE).strip('\x00')
+    return selected_file.decode(LOCALE).strip("\x00")
 
 
 def find_files(directory=None):
@@ -106,7 +106,7 @@ def find_files(directory=None):
     """
     cmd = [FIND_CMD] + FIND_OPTS
     if directory is not None:
-        cmd.extend(['--', '.', directory])
+        cmd.extend(["--", ".", directory])
 
     return subprocess.run(cmd, capture_output=True).stdout
 
@@ -127,31 +127,32 @@ def locate_files(patterns):
 
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
-parser.add_argument('-b', '--boot',
-                    action='store_const',
-                    const=BOOT_DIR,
-                    dest='dir',
-                    help='edit a file in /boot')
-parser.add_argument('-d', '--dir',
-                    dest='dir',
-                    type=str,
-                    help='edit a file in a given directory')
-parser.add_argument('-E', '--etc',
-                    action='store_const',
-                    const=ETC_DIR,
-                    dest='dir',
-                    help='edit a file in /etc')
-parser.add_argument('-e', '--editor',
-                    help='use a given editor')
-parser.add_argument('patterns',
-                    type=str,
-                    nargs='*',
-                    help='patterns to pass to locate')
+parser.add_argument(
+    "-b",
+    "--boot",
+    action="store_const",
+    const=BOOT_DIR,
+    dest="dir",
+    help="edit a file in /boot",
+)
+parser.add_argument(
+    "-d", "--dir", dest="dir", type=str, help="edit a file in a given directory"
+)
+parser.add_argument(
+    "-E",
+    "--etc",
+    action="store_const",
+    const=ETC_DIR,
+    dest="dir",
+    help="edit a file in /etc",
+)
+parser.add_argument("-e", "--editor", help="use a given editor")
+parser.add_argument("patterns", type=str, nargs="*", help="patterns to pass to locate")
 
 args = parser.parse_args()
 
 final_find_cmd = [FIND_CMD] + FIND_OPTS
-editor = ''
+editor = ""
 
 try:
     editor = select_editor(args.editor)
@@ -168,7 +169,7 @@ else:
 
 selected_file = run_fzf(files)
 
-if not selected_file == '':
+if not selected_file == "":
     cmd = gen_editor_cmd(selected_file)
     subprocess.run(cmd)
 else:

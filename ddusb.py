@@ -7,10 +7,7 @@ import subprocess
 
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
-parser.add_argument("-b", "--bs",
-                    default=512,
-                    help="block size",
-                    metavar="bs")
+parser.add_argument("-b", "--bs", default=512, help="block size", metavar="bs")
 parser.add_argument("input_file", help="input file to write")
 parser.add_argument("output_file", help="output block device")
 args = parser.parse_args()
@@ -28,11 +25,17 @@ print(f"Block device: {block_device}")
 print(f"Block size: {block_size}")
 
 try:
-    subprocess.run(["dd", f"if={input_file}",
-                    f"of={block_device}",
-                    f"bs={block_size}",
-                    "status=progress"], check=True)
+    subprocess.run(
+        [
+            "dd",
+            f"if={input_file}",
+            f"of={block_device}",
+            f"bs={block_size}",
+            "status=progress",
+        ],
+        check=True,
+    )
 except subprocess.CalledProcessError:
     exit(1)
 else:
-    subprocess.run(['sync'])
+    subprocess.run(["sync"])
