@@ -61,13 +61,10 @@ block_size = args.bs
 input_file = args.input_file
 block_device = args.output_file
 
+# Ensure that block_device is really a block device
 if not pathlib.Path(block_device).is_block_device():
     print(f'Error: "{block_device}" is not a block device')
     exit(1)
-
-print(f"Input file: {input_file}")
-print(f"Block device: {block_device}")
-print(f"Block size: {block_size}")
 
 # Check if block_device is excluded
 exclude_patterns = read_exclude_file(EXCLUDE_FILE)
@@ -76,6 +73,10 @@ device_blacklist = expand_globs(*exclude_patterns)
 if block_device in device_blacklist:
     print(f'Error: "{block_device}" is blacklisted from running dd')
     exit(2)
+
+print(f"Input file: {input_file}")
+print(f"Block device: {block_device}")
+print(f"Block size: {block_size}")
 
 try:
     subprocess.run(
