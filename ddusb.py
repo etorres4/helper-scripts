@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Write an ISO image to a usb drive using dd."""
+"""Wrapper script for using dd to write to a USB drive."""
 
 import argparse
 import glob
@@ -8,7 +8,7 @@ import re
 import subprocess
 
 # ========== Constants ==========
-COMMENT_PATTERN = "[#;]"
+COMMENT_PATTERN = "^[#;]"
 EXCLUDE_FILE = "/etc/helper-scripts/ddusb-exclude.conf"
 
 
