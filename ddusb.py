@@ -2,7 +2,6 @@
 """Wrapper script for using dd to write to a USB drive."""
 
 import argparse
-import glob
 import pathlib
 import re
 import subprocess
@@ -33,23 +32,6 @@ def read_exclude_file(exclude_file):
     return lines
 
 
-def expand_globs(*globs):
-    """For each glob given, expand these globs and return a list
-    containing each glob expanded.
-
-    :param globs: patterns to expand
-    :type globs: str
-    :returns: all expanded globs aggregated together
-    :rtype: list
-    """
-    expanded_globs = []
-
-    for line in globs:
-        expanded_globs.extend(glob.glob(line, recursive=True))
-
-    return expanded_globs
-
-
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--bs", default=512, help="block size", metavar="bs")
@@ -59,23 +41,23 @@ args = parser.parse_args()
 
 block_size = args.bs
 input_file = args.input_file
-block_device = args.output_file
+block_path = args.output_file
 
-# Ensure that block_device is really a block device
-if not pathlib.Path(block_device).is_block_device():
-    print(f'Error: "{block_device}" is not a block device')
+# Ensure that block_path is really a block device
+if not pathlib.Path(block_path).is_block_device():
+    print(f'Error: "{block_path}" is not a block device')
     exit(1)
 
-# Check if block_device is excluded
+# Check if block_path is excluded
 exclude_patterns = read_exclude_file(EXCLUDE_FILE)
-device_blacklist = expand_globs(*exclude_patterns)
 
-if block_device in device_blacklist:
-    print(f'Error: "{block_device}" is blacklisted from running dd')
-    exit(2)
+for pattern in exclude_patterns:
+    if re.fullmatch(pattern, block_path):
+        print(f'Error: "{block_path}" is blacklisted from running dd')
+        exit(2)
 
 print(f"Input file: {input_file}")
-print(f"Block device: {block_device}")
+print(f"Block device: {block_path}")
 print(f"Block size: {block_size}")
 
 try:
@@ -83,7 +65,7 @@ try:
         [
             "dd",
             f"if={input_file}",
-            f"of={block_device}",
+            f"of={block_path}",
             f"bs={block_size}",
             "status=progress",
         ],
