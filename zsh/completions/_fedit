@@ -2,7 +2,6 @@
 local arguments
 
 arguments=(
-$argument_list
   {-h, --help}'[show this help message and exit]'
   {-b, --boot}'[edit a file in /boot]'
   {-d, --dir}'[edit a file in a given directory]'
