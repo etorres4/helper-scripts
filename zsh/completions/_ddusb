@@ -1,7 +1,6 @@
 #compdef ddusb
 
 # zsh completions for 'ddusb'
-# automatically generated with http://github.com/RobSis/zsh-completion-generator
 local arguments
 
 arguments=(

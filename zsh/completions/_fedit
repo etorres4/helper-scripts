@@ -2,12 +2,11 @@
 local arguments
 
 arguments=(
-$argument_list
-  {-h, --help}'[show this help message and exit]'
-  {-b, --boot}'[edit a file in /boot]'
-  {-d, --dir}'[edit a file in a given directory]'
-  {-E, --etc}'[edit a file in /etc]'
-  {-e, --editor}'[use a given editor]'
+  {-h,--help}'[show this help message and exit]'
+  {-b,--boot}'[edit a file in /boot]'
+  {-d,--dir}'[edit a file in a given directory]'
+  {-E,--etc}'[edit a file in /etc]'
+  {-e,--editor}'[use a given editor]'
   '*:filename:_files'
 )
 
