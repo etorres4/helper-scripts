@@ -69,7 +69,7 @@ if __name__ == "__main__":
         "-d",
         "--directories-only",
         action="store_const",
-        const=["--type", "directories"],
+        const=["--type", "directory"],
         dest="fd_extra_opts",
         help="filter results to directories",
     )
@@ -137,13 +137,13 @@ if __name__ == "__main__":
         for ext in args.extensions:
             FD_OPTS.extend(["--extension", ext])
 
-    files = []
+    files = set()
     for pattern in args.patterns:
         cmd = [FD_BIN, *FD_OPTS, pattern]
-        files.extend(
+        files.update(
             subprocess.run(cmd, capture_output=True, text=True).stdout.splitlines()
         )
-    files.sort()
+    files = sorted(files)
 
     if files == []:
         print(f"No results found, exiting")
