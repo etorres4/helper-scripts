@@ -2,6 +2,7 @@
 """Wrapper script for using dd to write to a USB drive."""
 
 import argparse
+import os
 import pathlib
 import re
 import subprocess
@@ -9,6 +10,10 @@ import subprocess
 # ========== Constants ==========
 COMMENT_PATTERN = "^[#;]"
 EXCLUDE_FILE = "/etc/helper-scripts/ddusb-exclude.conf"
+
+E_BLOCKDEVICE_ERROR = 1
+E_EXCLUDE_ERROR = 2
+E_DD_ERROR = 3
 
 
 # ========== Functions ==========
@@ -46,7 +51,7 @@ block_path = args.output_file
 # Ensure that block_path is really a block device
 if not pathlib.Path(block_path).is_block_device():
     print(f'Error: "{block_path}" is not a block device')
-    exit(1)
+    exit(E_BLOCKDEVICE_ERROR)
 
 # Check if block_path is excluded
 exclude_patterns = read_exclude_file(EXCLUDE_FILE)
@@ -54,7 +59,7 @@ exclude_patterns = read_exclude_file(EXCLUDE_FILE)
 for pattern in exclude_patterns:
     if re.fullmatch(pattern, block_path):
         print(f'Error: "{block_path}" is blacklisted from running dd')
-        exit(2)
+        exit(E_EXCLUDE_ERROR)
 
 print(f"Input file: {input_file}")
 print(f"Block device: {block_path}")
@@ -72,6 +77,6 @@ try:
         check=True,
     )
 except subprocess.CalledProcessError:
-    exit(3)
+    exit(E_DD_ERROR)
 else:
-    subprocess.run("sync")
+    os.sync()
