@@ -4,11 +4,17 @@
 local arguments
 
 arguments=(
-  {-d,--directories-only}'[only delete directories]'
+  {-d,--directories-only}'[filter results to directories]'
+  {-e,--empty-only}'[filter results to empty files and directories]'
+  {-f,--files-only}'[filter results to files]'
+  {-F,--force-directory-delete}'[do not ignore non-empty directories, delete anyways]'
+  {-E,--extension}'[file extension]'
   {-h,--help}'[print this help page]'
   {-i,--no-ignore}'[do not ignore .gitignore and .fdignore]'
   {-I,--no-ignore-vcs}'[do not ignore .gitignore]'
+  {-l,--links-only}'[filter results to symlinks]'
   '*:filename:_files'
 )
+
 
 _arguments -s $arguments
