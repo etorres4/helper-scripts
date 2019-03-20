@@ -137,7 +137,7 @@ if __name__ == "__main__":
         for ext in args.extensions:
             FD_OPTS.extend(["--extension", ext])
 
-    files = {}
+    files = set()
     for pattern in args.patterns:
         cmd = [FD_BIN, *FD_OPTS, pattern]
         files.update(
