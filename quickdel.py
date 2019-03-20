@@ -137,7 +137,7 @@ if __name__ == "__main__":
         for ext in args.extensions:
             FD_OPTS.extend(["--extension", ext])
 
-    files = set()
+    files = {}
     for pattern in args.patterns:
         cmd = [FD_BIN, *FD_OPTS, pattern]
         files.update(
@@ -165,14 +165,11 @@ if __name__ == "__main__":
         exit(E_USER_RESPONSE_NO)
 
     # Remove files first
-    for f in filter(os.path.isfile, files):
+    for f in [fi for fi in files if os.path.isfile(fi)]:
         os.remove(f)
 
     # Check -f, --force-directory-delete option
-    if args.force_directory_delete:
-        rmdir_func = shutil.rmtree
-    else:
-        rmdir_func = os.rmdir
+    rmdir_func = shutil.rmtree if args.force_directory_delete else os.rmdir
 
     for d in filter(os.path.isdir, files):
         try:
