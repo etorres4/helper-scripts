@@ -7,6 +7,8 @@ arguments=(
   {-d,--dir}'[edit a file in a given directory]'
   {-E,--etc}'[edit a file in /etc]'
   {-e,--editor}'[use a given editor]'
+  {-I,--no-ignore}'[do not respect  .(git|fd)ignore files]'
+  {-i,--no-ignore-vcs}'[do not respect .gitignore files]'
   '*:filename:_files'
 )
 
