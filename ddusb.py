@@ -8,7 +8,7 @@ import re
 import subprocess
 
 # ========== Constants ==========
-COMMENT_PATTERN = "^[#;]"
+COMMENT_PATTERN = r"^[#;]"
 EXCLUDE_FILE = "/etc/helper-scripts/ddusb-exclude.conf"
 
 E_BLOCKDEVICE_ERROR = 1

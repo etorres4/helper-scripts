@@ -33,7 +33,7 @@ from termcolor import colored
 FD_BIN = "/usr/bin/fd"
 FD_OPTS = ["--hidden"]
 # Matches 'y' or 'yes' only, ignoring case
-USER_RESPONSE_YES = "^[Yy]{1}([Ee]{1}[Ss]{1})?$"
+USER_RESPONSE_YES = r"^[Yy]{1}([Ee]{1}[Ss]{1})?$"
 
 E_NO_RESULTS = 1
 E_USER_RESPONSE_NO = 2
