@@ -19,6 +19,7 @@ BOOT_DIR = "/boot"
 ETC_DIR = "/etc"
 
 # ----- Exit Codes -----
+E_INTERRUPT = 1
 E_NOEDITORFOUND = 2
 E_NOFILESELECTED = 3
 
@@ -200,7 +201,10 @@ if __name__ == "__main__":
         else locate_files(args.patterns)
     )
 
-    selected_file = run_fzf(files)
+    try:
+        selected_file = run_fzf(files)
+    except KeyboardInterrupt:
+        exit(E_INTERRUPT)
 
     if selected_file != "":
         cmd = gen_editor_cmd(selected_file)
