@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # filename handling
     # if -b is used, DEFAULT_FILENAME must take precedence
     if args.filename is not None and args.batchfile is None:
-        dl_opts.append(f"--output={args.filename}")
+        dl_opts.append(f"{Path.home() / 'Music' / args.filename}.%(ext)s")
     else:
         dl_opts.append(f"--output={DEFAULT_FILENAME}")
 
