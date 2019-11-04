@@ -54,10 +54,7 @@ def convert_to_celsius(mkel_temp):
 # ========== Main Script ==========
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "device",
-    help="device node to retrieve\
-                    the temperature for",
-    metavar="dev",
+    "device", help="device node to retrieve the temperature for", metavar="dev"
 )
 args = parser.parse_args()
 
