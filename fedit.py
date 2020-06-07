@@ -13,6 +13,8 @@ import os
 import shutil
 import subprocess
 
+from sys import platform
+
 # ========== Constants ==========
 # ----- Paths -----
 BOOT_DIR = "/boot"
@@ -24,15 +26,26 @@ E_NOEDITORFOUND = 2
 E_NOFILESELECTED = 3
 
 # ----- Commands -----
-FIND_CMD = "/usr/bin/fd"
+
+# Options: show hidden files, null terminator, files only
+# Optional arguments: show vcs files, show every file
+FIND_CMD = shutil.which("fd")
 FIND_OPTS = ["--hidden", "--print0", "--type", "f"]
 EXTRA_FIND_OPTS = {"no_ignore_vcs": "--no-ignore", "no_ignore": "--no-ignore-vcs"}
 
-LOCATE_CMD = "/usr/bin/locate"
-LOCATE_OPTS = ["--all", "--ignore-case", "--null"]
+# Options: null terminator, ignore case, print names matching all non-option arguments
+LOCATE_CMD = shutil.which("locate")
 
-FZF_CMD = "/usr/bin/fzf"
+# Options: read null terminator, auto-select if one option, exit if no options, print null terminator
+FZF_CMD = shutil.which("fzf")
 FZF_OPTS = ["--read0", "--select-1", "--exit-0", "--print0"]
+
+# Platform-specific options
+# macOS doesn't support GNU-style long options
+if platform == "linux":
+    LOCATE_OPTS = ["--all", "--ignore-case", "--null"]
+elif platform == "darwin":
+    LOCATE_OPTS = ["-0", "-i"]
 
 # ----- Misc. -----
 LOCALE = "utf-8"
@@ -139,6 +152,10 @@ def locate_files(patterns):
 
 # ========== Main Script ==========
 if __name__ == "__main__":
+    # This script doesn't support Windows
+    if platform == "windows":
+        sys.exit(E_INTERRUPT)
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-b",
