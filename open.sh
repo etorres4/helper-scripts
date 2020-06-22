@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # open - fuzzy find, select, and open a file using xdg-open
 #
 # Dependencies:

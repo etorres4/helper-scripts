@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # Export a key to a given keyfile
 
 echo -n "Enter the name of the output file: "
