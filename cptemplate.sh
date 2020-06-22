@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # Copy a file from ~/Templates to a given name
 #
 # Dependencies:
