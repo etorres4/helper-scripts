@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # open - fuzzy find, select, and open a file using xdg-open
 #
 # Dependencies:

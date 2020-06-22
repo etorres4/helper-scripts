@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Wrapper script for using dd to write to a USB drive."""
 
 import argparse

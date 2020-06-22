@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # fless - fuzzy find a file and run less on it
 # Dependencies
 # - fd (soft)
