@@ -1,15 +1,15 @@
 # Fuzzy find a file and then edit it
 
-_fedit() {
+_run_fedit() {
     fedit && zle reset-prompt
 }
 
-_etcedit() {
+_run_etcedit() {
     fedit --etc && zle reset-prompt
 }
 
-zle -N _fedit
-bindkey -M viins '^o' _fedit
+zle -N _run_fedit
+bindkey -M viins '^o' _run_fedit
 
-zle -N _etcedit
-bindkey -M viins '^e' _etcedit
+zle -N _run_etcedit
+bindkey -M viins '^e' _run_etcedit
