@@ -1,5 +1,6 @@
 *.pkg.tar.xz*
 helper-scripts
+helper-scripts.rb
 helper-scripts.spec
 PKGBUILD
 pkg
