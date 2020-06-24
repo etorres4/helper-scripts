@@ -30,7 +30,7 @@ import subprocess
 from termcolor import colored
 
 # ========== Constants ==========
-FD_BIN = "/usr/bin/fd"
+FD_BIN = shutil.which("fd")
 FD_OPTS = ["--hidden"]
 # Matches 'y' or 'yes' only, ignoring case
 USER_RESPONSE_YES = r"^[Yy]{1}([Ee]{1}[Ss]{1})?$"
