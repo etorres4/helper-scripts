@@ -35,7 +35,7 @@ while true; do
 done
 
 # check for existence of fd and fzf binaries
-if [[ ! -x '/usr/bin/fzf' ]]; then
+if ! $(which fzf > /dev/null); then
     printf '%s\n' 'fzf is not installed on the system'
     exit 1
 fi
@@ -43,13 +43,13 @@ fi
 declare -a find_opts
 template_dir="${HOME}/Templates"
 
-if [[ -x '/usr/bin/fd' ]]; then
-    find_bin='/usr/bin/fd'
+if [[ -x $(which fd) ]]; then
+    find_bin=$(which fd)
     find_opts+=('--print0')
     find_opts+=('--type' 'f')
-    find_opts+=('.' "${template_dir}")
+    find_opts+=('--' '.' "${template_dir}")
 else
-    find_bin='/usr/bin/find'
+    find_bin=$(which find)
     find_opts+=("${template_dir}")
     find_opts+=('-mindepth' '0')
     find_opts+=('-type' 'f')

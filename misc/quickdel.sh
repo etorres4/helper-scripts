@@ -28,7 +28,7 @@ declare -a fd_opts
 declare -r blue='\033[0;34m'
 declare -r nocolor='\033[0;0m'
 
-[[ ! -x '/usr/bin/fd' ]] && echo 'fd is not present, cancelling' >&2 && exit 1
+[[ -z "$(which fd)" ]] && echo 'fd is not present, cancelling' >&2 && exit 1
 
 while true; do
     case "${1}" in
@@ -85,7 +85,7 @@ for filename in "${files[@]}"; do
     fi
 done
 
-printf '%s' "Would you like to delete these files? "
+printf '%s' "Would you like to delete these files? [y/n] "
 read -r -n 1 ans
 
 if [[ "${ans:-n}" =~ (Y|y) ]]; then
